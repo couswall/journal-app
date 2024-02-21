@@ -1,18 +1,38 @@
 import { Link } from "react-router-dom"
+import { useForm } from "../../hooks"
 
 export const LoginPage = () => {
+
+  const { email, password, onInputChange } = useForm({
+    email: '',
+    password: ''
+  }); 
+
+
   return (
     <>
       <div className="container vh-100 d-flex justify-content-center align-items-center">
         <form className="p-5 rounded" style={{backgroundColor: 'var(--secondary-color)'}}>
           <div className="mb-3 ">
             <label className="form-label text-dark fw-bold">Email address</label>
-            <input type="email" className="form-control"aria-describedby="emailHelp"/>
-            {/* <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div> */}
+            <input 
+              type="email" 
+              className="form-control"
+              aria-describedby="emailHelp"
+              name="email"
+              value={ email }
+              onChange={ onInputChange }
+            />
           </div>
           <div className="mb-3">
             <label className="form-label text-dark fw-bold">Password</label>
-            <input type="password" className="form-control" />
+            <input 
+              type="password" 
+              className="form-control" 
+              name="password"
+              value={ password }
+              onChange={ onInputChange }
+            />
           </div>
           <div className="mb-3 d-flex justify-content-between">
             <label className="form-label text-dark" >¿No tienes cuenta?</label>
