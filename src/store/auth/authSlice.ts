@@ -36,6 +36,11 @@ export const authSlice = createSlice({
 
     //Logout Reducer
     logout: ( state, action ) => {
+      state.status = 'not-authenticated';
+      state.uid = null;
+      state.email = null;
+      state.displayName = null;
+      state.photoUrl = null;
       state.errorMessage = action.payload;
     },
 
