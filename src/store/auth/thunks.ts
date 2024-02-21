@@ -1,5 +1,5 @@
 import { Action, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
-import { checkingCredentials } from ".";
+import { checkingCredentials, login, logout } from ".";
 import { signInWithGoogle } from "../../firebase/providers"
 import { RootState } from "../store";
 
@@ -20,11 +20,14 @@ export const checkingAuthentication = ( email: string, password: string ): Thunk
 
 
 //Start SignIn with Google
-export const startGoogleSignIn = () =>{
+export const startGoogleSignIn = (): ThunkAction<void, RootState, unknown, UnknownAction> =>{
     return async( dispatch ) => {
 
         dispatch( checkingCredentials() );
+        const result = await signInWithGoogle();
 
-        const result = signInWithGoogle();
+        if( !result?.ok ) return dispatch( logout( result?.errorMessage ) );
+        
+        dispatch( login( result ) );
     }
 }
