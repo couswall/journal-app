@@ -1,6 +1,6 @@
-import { signInWithPopup } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth/cordova";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { FirebaseAuth } from "./config";
+
 
 
 const googleProvider = new GoogleAuthProvider();
@@ -10,7 +10,27 @@ export const signInWithGoogle = async () => {
 
     try {
         const result = await signInWithPopup( FirebaseAuth, googleProvider );
+
+        const { uid, email, displayName, photoURL } = result.user;
+
+        return{
+            ok: true, 
+            uid,
+            email, 
+            displayName, 
+            photoURL
+        }
+
     } catch (error) {
-        
+
+        if ( error instanceof Error) {
+            const errorMessage = error.message;
+            console.log(error);
+            return{
+                ok: false, 
+                errorMessage
+            }
+        }
+
     }
 }
