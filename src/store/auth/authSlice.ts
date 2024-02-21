@@ -11,7 +11,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-    status: 'checking',  // 'checking', 'authenticated', 'not-authenticated'
+    status: 'not-authenticated',  // 'checking', 'authenticated', 'not-authenticated'
     uid: null, 
     email: null,
     displayName: null,
@@ -35,7 +35,7 @@ export const authSlice = createSlice({
 
     //Checking credentials
     checkingCredentials: ( state ) => {
-
+      state.status = 'checking'
     },
   },
 })
