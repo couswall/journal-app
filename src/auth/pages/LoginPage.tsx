@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom"
 import { useForm } from "../../hooks"
+import { FaGoogle } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { checkingAuthentication, startGoogleSignIn } from "../../store/auth";
+import { AppDispatch } from "../../store";
 
 export const LoginPage = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { email, password, onInputChange } = useForm({
     email: '',
@@ -9,10 +15,24 @@ export const LoginPage = () => {
   }); 
 
 
+  //Submit Function
+  const onSubmitForm = (e: React.FormEvent<HTMLFormElement> ) => {
+    e.preventDefault();
+
+    dispatch( checkingAuthentication( email, password ) );
+
+  }
+
+  //Google SignIn 
+  const onGoogleSignIn = () => {
+    dispatch( startGoogleSignIn() );
+  }
+  
+
   return (
     <>
       <div className="container vh-100 d-flex justify-content-center align-items-center">
-        <form className="p-5 rounded" style={{backgroundColor: 'var(--secondary-color)'}}>
+        <form className="p-5 rounded" style={{backgroundColor: 'var(--secondary-color)'}} onSubmit={ onSubmitForm }>
           <div className="mb-3 ">
             <label className="form-label text-dark fw-bold">Email address</label>
             <input 
@@ -42,7 +62,14 @@ export const LoginPage = () => {
           </div>
           <div className="d-flex justify-content-between">
             <button type="submit" className="btn btn-primary">Login</button>
-            <button type="submit" className="btn btn-primary">Google</button>
+            <button 
+              type="submit" 
+              className="btn btn-primary d-flex justify-content-center align-items-center" 
+              onClick={ () => onGoogleSignIn() }
+            >
+              <FaGoogle className="me-2" />
+              Google
+            </button>
           </div>
         </form>
       </div>
