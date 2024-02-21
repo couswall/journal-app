@@ -18,3 +18,14 @@ body{
     color: #fff;
 }
 
+.btn-primary{
+    background-color: var(--background-color);
+    border: none;
+}
+
+.btn-primary:hover{
+    background-color: #3e3e5a;
+}
+
+
+
