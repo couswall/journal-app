@@ -1,0 +1,20 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --main-font: "Mulish", sans-serif;
+    --background-color: #2B2A4C; 
+    --light-color: #EEE2DE;
+    --red-color: #B31312;
+    --secondary-color: #EA906C;
+}
+
+body{
+    font-family: var(--main-font);
+    background-color: var(--background-color);
+    color: #fff;
+}
+
