@@ -60,11 +60,11 @@ export const LoginPage = () => {
               <Link to={'/auth/register'} className="text-dark">Registrate</Link>
             </label>
           </div>
-          <div className="d-flex justify-content-between">
-            <button type="submit" className="btn btn-primary">Login</button>
+          <div className="d-flex justify-content-between gap-2">
+            <button type="submit" className="btn btn-primary w-100">Login</button>
             <button 
               type="submit" 
-              className="btn btn-primary d-flex justify-content-center align-items-center" 
+              className="btn btn-primary d-flex justify-content-center align-items-center w-100" 
               onClick={ () => onGoogleSignIn() }
             >
               <FaGoogle className="me-2" />
