@@ -2,14 +2,14 @@ import { useEffect, useState } from "react"
 import { Validations } from "../auth/pages";
 
 
-interface formCheckedValidation {
+interface FormCheckedValidation {
     [key: string ]: null | string; 
 }
 
 export const useForm = <T extends Record<string,string>> ( initialForm: T, formValidations: Validations = {} ) => {
     
     const [formState, setFormState] = useState<T>( initialForm );
-    const [ formValidation, setFormValidation ] = useState<formCheckedValidation>({});
+    const [ formValidation, setFormValidation ] = useState<FormCheckedValidation>({});
 
     const onInputChange = ( {target}: React.ChangeEvent<HTMLInputElement> ):void => {
         
@@ -32,17 +32,20 @@ export const useForm = <T extends Record<string,string>> ( initialForm: T, formV
     //Validación de Formulario
     const createValidators = () => {
         
-        const formCheckedValues: formCheckedValidation = {}; 
+        const formCheckedValues: FormCheckedValidation = {}; 
 
         for (const formField of Object.keys( formValidations )) {
             
             const [ fn, errorMessage = 'Este campo es requerido'] = formValidations[ formField ];
-
+            
+            
             formCheckedValues[`${ formField }Valid` ] = fn( formState[formField] ) ? null : errorMessage;
 
             setFormValidation( formCheckedValues );
         }
     }
+
+    
 
     return{
         ...formState,
