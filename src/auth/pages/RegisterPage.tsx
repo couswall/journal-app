@@ -2,6 +2,10 @@ import { Link } from "react-router-dom"
 import { FormLayout } from "../layout/FormLayout"
 import { useForm } from "../../hooks"
 import { useState } from "react";
+import { startCreatingUserWithEmailPassword } from "../../store/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store";
+import { RootState } from "../../store";
 
 
 export interface Validations{
@@ -32,20 +36,27 @@ const formValidations: Validations = {
 
 
 export const RegisterPage = () => {
+
+  const { errorMessage } = useSelector( ( state: RootState ) => state.auth );
+  
+  const dispatch = useDispatch<AppDispatch>();
   
   const { displayName, email, password, onInputChange, 
           formValidation: { displayNameValid, emailValid, passwordValid },
-          isValid
+          isValid, formState
     } = useForm( formData, formValidations );
 
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+
 
   const onSubmitForm = ( e: React.FormEvent<HTMLFormElement> ) => {
       e.preventDefault();
       setFormSubmitted( true );
 
       if( !isValid ) return; 
-            
+
+      dispatch( startCreatingUserWithEmailPassword( formState ) ); 
+      
   }
 
   return (
@@ -87,6 +98,12 @@ export const RegisterPage = () => {
               required
             />
             <>{ ( !!passwordValid && formSubmitted ) && <div id="passwordHelpBlock" className="form-text">{passwordValid}</div> } </>
+          </div>
+          {/* Error Message */}
+          <div className="mb-3">             
+             <div className="form-text alert alert-warning" style={{ display: (!!errorMessage && formSubmitted ) ? '' : 'none'}}>
+                { errorMessage as string }
+              </div>
           </div>
           <div className="d-flex justify-content-between gap-2 mb-3 mt-4">
             <button type="submit" className="btn btn-primary w-100">Crear cuenta</button>
