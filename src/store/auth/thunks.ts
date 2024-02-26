@@ -33,10 +33,15 @@ export const startGoogleSignIn = (): ThunkAction<void, RootState, unknown, Unkno
 }
 
 // Create a new user with email and password
-export const startCreatingUserWithEmailPassword = ({ email, password, displayName }: RegisterNewUser): ThunkAction<void, RootState, unknown, UnknownAction> => {
+export const startCreatingUserWithEmailPassword = ({ displayName, email, password }: RegisterNewUser): ThunkAction<void, RootState, unknown, UnknownAction> => {
     return async ( dispatch ) => {
         
         dispatch( checkingCredentials() );
-        await registerUserWithEmailPassword({ email, password, displayName });
+        const { ok, uid, photoURL, errorMessage } = await registerUserWithEmailPassword({ displayName, email, password });
+        
+        if(!ok) return dispatch( logout(errorMessage) );
+
+        dispatch( login({ uid, displayName, email, photoURL }));
+    
     }
 }
