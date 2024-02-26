@@ -15,9 +15,19 @@ const formData = {
 }
 
 const formValidations: Validations = {
+
   displayName: [( value: string ) => value.length >= 1, 'El nombre es obligatorio'],
-  email: [( value: string ) => value.includes('@'), 'El correo debe de tener un @'],
-  password: [( value: string ) => value.length >= 6, 'El password debe de tener más de 6 letras'],
+
+  email: [( value: string ) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test( value );
+  }, 'Ingresa un email válido'],
+
+  password: [( value: string ) => {
+    const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    return re.test(value);
+  }, 'El password debe de contener al menos 8 caracteres que incluya al menos 1 letra mínuscula, 1 letra mayúscula, 1 numero y 1 carater especial'],
+
 }
 
 
@@ -35,9 +45,8 @@ export const RegisterPage = () => {
       setFormSubmitted( true );
 
       if( !isValid ) return; 
-      
+            
   }
-
 
   return (
     <>
