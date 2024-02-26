@@ -30,7 +30,7 @@ export const useForm = <T extends Record<string,string>> (
     }
 
     // Evalua si el formulario es válido
-    const isValid:boolean = useMemo(() => {
+    const isValid:boolean | undefined = useMemo(() => {
 
         for (const formValid of Object.keys( formValidation )) {
             
