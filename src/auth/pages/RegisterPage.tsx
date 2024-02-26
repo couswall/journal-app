@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { FormLayout } from "../layout/FormLayout"
 import { useForm } from "../../hooks"
+import { useState } from "react";
 
 
 export interface Validations{
@@ -8,9 +9,9 @@ export interface Validations{
 }
 
 const formData = {
-  displayName: 'Andre',
-  email: 'andre@google.com',
-  password: '123456'
+  displayName: '',
+  email: '',
+  password: ''
 }
 
 const formValidations: Validations = {
@@ -22,20 +23,21 @@ const formValidations: Validations = {
 
 export const RegisterPage = () => {
   
-  const { 
-      displayName, 
-      email, 
-      password, 
-      onInputChange, 
-      formValidation: { displayNameValid, emailValid, passwordValid }
+  const { displayName, email, password, onInputChange, 
+          formValidation: { displayNameValid, emailValid, passwordValid },
+          isValid
     } = useForm( formData, formValidations );
+
+    const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
 
   const onSubmitForm = ( e: React.FormEvent<HTMLFormElement> ) => {
       e.preventDefault();
+      setFormSubmitted( true );
 
+      if( !isValid ) return; 
+      
   }
 
-  console.log({ displayNameValid, emailValid, passwordValid })
 
   return (
     <>
@@ -50,6 +52,7 @@ export const RegisterPage = () => {
               onChange={ onInputChange }
               required
             />
+            <>{( !!displayNameValid && formSubmitted ) && <small id="displayNameHelpBlock" className="form-text">{displayNameValid}</small>}</>
           </div>
 
           <div className="mb-3 ">
@@ -57,12 +60,12 @@ export const RegisterPage = () => {
             <input 
               type="email" 
               className="form-control"
-              aria-describedby="emailHelp"
               name="email"
               value={ email }
               onChange={ onInputChange }
               required
             />
+             <>{( !!emailValid && formSubmitted ) && <small id="emailHelpBlock" className="form-text">{emailValid}</small>}</>
           </div>
           <div className="mb-3">
             <label className="form-label text-dark fw-bold">Password</label>
@@ -74,10 +77,8 @@ export const RegisterPage = () => {
               onChange={ onInputChange }
               required
             />
+            <>{ ( !!passwordValid && formSubmitted ) && <div id="passwordHelpBlock" className="form-text">{passwordValid}</div> } </>
           </div>
-          {/* <div id="passwordHelpBlock" className="form-text">
-            Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-          </div> */}
           <div className="d-flex justify-content-between gap-2 mb-3 mt-4">
             <button type="submit" className="btn btn-primary w-100">Crear cuenta</button>
           </div>
