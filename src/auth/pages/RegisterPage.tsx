@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { FormLayout } from "../layout/FormLayout"
 import { useForm } from "../../hooks"
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { startCreatingUserWithEmailPassword } from "../../store/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
@@ -37,9 +37,10 @@ const formValidations: Validations = {
 
 export const RegisterPage = () => {
 
-  const { errorMessage } = useSelector( ( state: RootState ) => state.auth );
-  
+  const { errorMessage, status } = useSelector( ( state: RootState ) => state.auth );
   const dispatch = useDispatch<AppDispatch>();
+
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [ status ]);
   
   const { displayName, email, password, onInputChange, 
           formValidation: { displayNameValid, emailValid, passwordValid },
@@ -53,7 +54,7 @@ export const RegisterPage = () => {
       e.preventDefault();
       setFormSubmitted( true );
 
-      if( !isValid ) return; 
+      if( !isValid || isCheckingAuthentication ) return; 
 
       dispatch( startCreatingUserWithEmailPassword( formState ) ); 
       
@@ -106,7 +107,13 @@ export const RegisterPage = () => {
               </div>
           </div>
           <div className="d-flex justify-content-between gap-2 mb-3 mt-4">
-            <button type="submit" className="btn btn-primary w-100">Crear cuenta</button>
+            <button 
+              type="submit" 
+              className="btn btn-primary w-100"
+              disabled = { isCheckingAuthentication }
+            >
+                Crear cuenta
+            </button>
           </div>
           <div className="d-flex justify-content-between">
             <label className="form-label text-dark" >¿Ya tienes cuenta?</label>
