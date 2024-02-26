@@ -2,21 +2,40 @@ import { Link } from "react-router-dom"
 import { FormLayout } from "../layout/FormLayout"
 import { useForm } from "../../hooks"
 
+
+export interface Validations{
+  [key: string ]: [( value: string ) => boolean, string ];
+}
+
 const formData = {
-  userName: 'Andre',
+  displayName: 'Andre',
   email: 'andre@google.com',
   password: '123456'
+}
+
+const formValidations: Validations = {
+  displayName: [( value: string ) => value.length >= 1, 'El nombre es obligatorio'],
+  email: [( value: string ) => value.includes('@'), 'El correo debe de tener un @'],
+  password: [( value: string ) => value.length >= 6, 'El password debe de tener más de 6 letras'],
 }
 
 
 export const RegisterPage = () => {
   
-  const { userName, email, password, onInputChange } = useForm( formData );
+  const { 
+      displayName, 
+      email, 
+      password, 
+      onInputChange, 
+      formValidation: { displayNameValid, emailValid, passwordValid }
+    } = useForm( formData, formValidations );
 
   const onSubmitForm = ( e: React.FormEvent<HTMLFormElement> ) => {
       e.preventDefault();
 
   }
+
+  console.log({ displayNameValid, emailValid, passwordValid })
 
   return (
     <>
@@ -26,8 +45,8 @@ export const RegisterPage = () => {
             <input 
               type="text" 
               className="form-control"
-              name="userName"
-              value={ userName }
+              name="displayName"
+              value={ displayName }
               onChange={ onInputChange }
               required
             />
