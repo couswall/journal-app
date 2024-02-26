@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Validations } from "../auth/pages";
 
 
@@ -6,13 +6,17 @@ interface FormCheckedValidation {
     [key: string ]: null | string; 
 }
 
-export const useForm = <T extends Record<string,string>> ( initialForm: T, formValidations: Validations = {} ) => {
+export const useForm = <T extends Record<string,string>> ( 
+    initialForm: T, 
+    formValidations: Validations = {} 
+    ) => {
     
     const [formState, setFormState] = useState<T>( initialForm );
     const [ formValidation, setFormValidation ] = useState<FormCheckedValidation>({});
 
+    //onInputChange
     const onInputChange = ( {target}: React.ChangeEvent<HTMLInputElement> ):void => {
-        
+
         const { name, value } = target;
         setFormState({
             ...formState, 
@@ -20,9 +24,23 @@ export const useForm = <T extends Record<string,string>> ( initialForm: T, formV
         })
     }
 
+    // Reset Form
     const onResetForm = () => {
         setFormState( initialForm );
     }
+
+    // Evalua si el formulario es válido
+    const isValid:boolean = useMemo(() => {
+
+        for (const formValid of Object.keys( formValidation )) {
+            
+            if ( formValidation[formValid] !== null ) return false; 
+
+            return true; 
+        }
+
+    }, [ formValidation ]);
+
 
     useEffect( () => {
         createValidators();
@@ -37,12 +55,11 @@ export const useForm = <T extends Record<string,string>> ( initialForm: T, formV
         for (const formField of Object.keys( formValidations )) {
             
             const [ fn, errorMessage = 'Este campo es requerido'] = formValidations[ formField ];
-            
-            
+        
             formCheckedValues[`${ formField }Valid` ] = fn( formState[formField] ) ? null : errorMessage;
-
-            setFormValidation( formCheckedValues );
         }
+        
+        setFormValidation( formCheckedValues );
     }
 
     
@@ -52,6 +69,7 @@ export const useForm = <T extends Record<string,string>> ( initialForm: T, formV
         formState, 
         onInputChange, 
         onResetForm,
-        ...formValidation,
+        formValidation, 
+        isValid
     }
 }
