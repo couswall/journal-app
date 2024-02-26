@@ -1,7 +1,7 @@
 import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseAuth } from "./config";
 
-interface RegisterNewUser {
+export interface RegisterNewUser {
     email: string; 
     password: string; 
     displayName: string; 

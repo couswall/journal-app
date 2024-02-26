@@ -1,6 +1,6 @@
 import { Action, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import { checkingCredentials, login, logout } from ".";
-import { signInWithGoogle } from "../../firebase/providers"
+import { RegisterNewUser, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
 import { RootState } from "../store";
 
 export type ThunkAction<
@@ -29,5 +29,14 @@ export const startGoogleSignIn = (): ThunkAction<void, RootState, unknown, Unkno
         if( !result?.ok ) return dispatch( logout( result?.errorMessage ) );
         
         dispatch( login( result ) );
+    }
+}
+
+// Create a new user with email and password
+export const startCreatingUserWithEmailPassword = ({ email, password, displayName }: RegisterNewUser): ThunkAction<void, RootState, unknown, UnknownAction> => {
+    return async ( dispatch ) => {
+        
+        dispatch( checkingCredentials() );
+        await registerUserWithEmailPassword({ email, password, displayName });
     }
 }
