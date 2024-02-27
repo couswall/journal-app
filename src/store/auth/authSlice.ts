@@ -11,7 +11,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-    status: 'not-authenticated',  // 'checking', 'authenticated', 'not-authenticated'
+    status: 'checking',  // 'checking', 'authenticated', 'not-authenticated'
     uid: null, 
     email: null,
     displayName: null,

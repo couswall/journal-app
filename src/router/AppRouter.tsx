@@ -1,8 +1,10 @@
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
 import { AuthRoutes, childAuthRoutes } from "../auth/routes/AuthRoutes";
-import { ErrorPage } from "../ui/components";
+import { CheckingAuth, ErrorPage } from "../ui/components";
 import { JournalPage } from "../journal/pages/JournalPage";
 import { childJournalRoutes } from "../journal/routes/JournalRoutes";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 
 const routesConfig = createBrowserRouter([
@@ -26,6 +28,12 @@ const routesConfig = createBrowserRouter([
 
 
 export const AppRouter = () => {
+  
+  const { status } = useSelector( (state: RootState) => state.auth )
+  
+  if ( status === 'checking') {
+    return <CheckingAuth/>
+  }
   return (
     <RouterProvider router={ routesConfig }/>
   )
