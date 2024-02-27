@@ -3,37 +3,44 @@ import { AuthRoutes, childAuthRoutes } from "../auth/routes/AuthRoutes";
 import { CheckingAuth, ErrorPage } from "../ui/components";
 import { JournalPage } from "../journal/pages/JournalPage";
 import { childJournalRoutes } from "../journal/routes/JournalRoutes";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { useCheckAuth } from "../hooks";
 
-
-const routesConfig = createBrowserRouter([
-    {
-        path: "/",
-        element: <JournalPage/>,
-        children: childJournalRoutes,
-        errorElement: <ErrorPage/> 
-    }, 
-    {
-        path: '/auth/*',
-        element: <AuthRoutes/>,
-        children: childAuthRoutes,
-        errorElement: <ErrorPage/>
-    },
-    {
-        path: '/*',
-        element: <Navigate to={'/'}/>
-    }
-]);
 
 
 export const AppRouter = () => {
   
-  const { status } = useSelector( (state: RootState) => state.auth )
+  const { status } = useCheckAuth();
   
   if ( status === 'checking') {
     return <CheckingAuth/>
   }
+
+  const routesConfig = ( status === 'authenticated') 
+                          ? createBrowserRouter([
+                              {
+                                path: "/",
+                                element: <JournalPage/>,
+                                children: childJournalRoutes,
+                                errorElement: <ErrorPage/> 
+                              },
+                              {
+                                path: "/*",
+                                element: <Navigate to={"/"}/>
+                              }
+                            ])
+                          : createBrowserRouter([
+                            {
+                                path: '/auth/*',
+                                element: <AuthRoutes/>,
+                                children: childAuthRoutes,
+                                errorElement: <ErrorPage/>
+                            },
+                            {
+                              path: "/*",
+                              element: <Navigate to={"auth/login"}/>
+                            }
+                          ])
+
   return (
     <RouterProvider router={ routesConfig }/>
   )
