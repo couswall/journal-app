@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useForm } from "../../hooks"
 import { FaGoogle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { checkingAuthentication, startGoogleSignIn } from "../../store/auth";
+import { startGoogleSignIn, startSignInWithEmailPassword } from "../../store/auth";
 import { AppDispatch } from "../../store";
 import { FormLayout } from "../layout/FormLayout";
 
@@ -20,7 +20,7 @@ export const LoginPage = () => {
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement> ) => {
     e.preventDefault();
 
-    dispatch( checkingAuthentication( email, password ) );
+    dispatch( startSignInWithEmailPassword( { email, password } ) );
 
   }
 
