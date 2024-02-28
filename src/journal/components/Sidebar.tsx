@@ -1,6 +1,5 @@
-import { MdOutlineTurnedInNot } from "react-icons/md";
+import { SidebarItem } from '.';
 import './styles';
-
 
 
 export const Sidebar = () => {
@@ -16,15 +15,7 @@ export const Sidebar = () => {
         <ul className="list-group list-group-flush border-bottom scrollarea ">
         {
             months.map( (month, index) => (
-            <li className="list-group-item d-flex py-4 border-bottom align-items-center gap-4" key={ index } style={{ backgroundColor:'var(--light-color)'}}>
-                <div className="fs-4">
-                <MdOutlineTurnedInNot />
-                </div>
-                <div>
-                <h6 className="mb-2 d-inline-block d-flex flex-column">{month}</h6>
-                <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, sunt!</small>
-                </div>
-            </li>
+                <SidebarItem key={ index } item={ month }/>
             ))
         }
         </ul>
