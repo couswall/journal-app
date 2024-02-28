@@ -27,5 +27,19 @@ body{
     background-color: #3e3e5a;
 }
 
+.bg-principal{
+    background-color: var(--background-color);
+}
+
+.bg-main-red{
+    background-color: var(--red-color);
+}
+.text-light-color{
+    color: var(--light-color);
+}
+
+.text-primary-color{
+    color: var(--background-color);
+}
 
 
