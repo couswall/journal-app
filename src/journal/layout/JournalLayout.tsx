@@ -8,19 +8,18 @@ interface JournalInterface {
 
 export const JournalLayout = ({ children }: JournalInterface ) => {
   return (
-    <div className="container-fluid vh-100 p-0" style={{backgroundColor: 'var(--light-color)'}}>
+    <div className="container-fluid vh-100 p-0 position-relative" style={{backgroundColor: 'var(--light-color)'}}>
         
         {/* Navbar */}
         <Navbar/>
         
         <main className="main d-flex flex-row w-100">
-              
             {/* Sidebar */}
             <Sidebar/>
             
             
             {/* Journal */}
-            <div className="w-100 p-3 position-relative">
+            <div className="w-100 p-3">
                 <div className=" w-100 h-100 bg-principal rounded d-flex flex-column justify-content-center align-items-center">
                     <div className="text-light-color mb-3" style={{fontSize: '50px'}}>
                       <FaRegStar />
