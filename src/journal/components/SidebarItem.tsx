@@ -1,8 +1,9 @@
 import { MdOutlineTurnedInNot } from "react-icons/md"
+import './styles';
 
 export const SidebarItem = ({item}) => {
   return (
-    <li className="list-group-item d-flex py-4 border-bottom align-items-center gap-4" style={{ backgroundColor:'var(--light-color)'}}>
+    <li className="sidebar-item list-group-item d-flex py-4 border-bottom align-items-center gap-4">
         <div className="fs-4">
             <MdOutlineTurnedInNot />
         </div>
