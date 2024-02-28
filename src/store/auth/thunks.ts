@@ -1,6 +1,6 @@
 import { Action, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import { checkingCredentials, login, logout } from ".";
-import { RegisterNewUser, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
+import { LoginEmailPassword, RegisterNewUser, loginWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
 import { RootState } from "../store";
 
 export type ThunkAction<
@@ -10,8 +10,10 @@ export type ThunkAction<
   A extends Action // known types of actions that can be dispatched
 > = (dispatch: ThunkDispatch<S, E, A>, getState: () => S, extraArgument: E) => R
 
+
+
 //Checking Authentication
-export const checkingAuthentication = ( email: string, password: string ): ThunkAction<void, RootState, unknown, UnknownAction>  => {
+export const checkingAuthentication = (): ThunkAction<void, RootState, unknown, UnknownAction>  => {
     return async( dispatch ) => {
 
         dispatch( checkingCredentials() );
@@ -45,6 +47,22 @@ export const startCreatingUserWithEmailPassword = ({ displayName, email, passwor
     
     }
 }
+
+// Start Sign In with email and password
+export const startSignInWithEmailPassword = ({ email , password }: LoginEmailPassword): ThunkAction<void, RootState, unknown, UnknownAction>  => {
+    return async( dispatch ) => {
+
+        dispatch( checkingCredentials() );
+
+        const { ok, uid, displayName, photoURL, errorMessage } = await loginWithEmailPassword( { email, password } ); 
+        
+        if( !ok ) return dispatch( logout( errorMessage ) );
+
+        dispatch( login({ uid, displayName, email, photoURL }) );
+    }   
+}
+
+
 
 // Logout from from firebase
 export const startLogoutFirebase = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
