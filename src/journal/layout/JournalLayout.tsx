@@ -1,4 +1,3 @@
-import { FaPlus } from "react-icons/fa"
 import { Navbar, Sidebar } from "../components"
 import { NoteView, NothingSelectedView } from "../view"
 
@@ -14,6 +13,7 @@ export const JournalLayout = ({ children }: JournalInterface ) => {
         {/* Navbar */}
         <Navbar/>
         
+        {/* Main */}
         <main className="main d-flex flex-row w-100">
             {/* Sidebar */}
             <Sidebar/>
@@ -21,16 +21,13 @@ export const JournalLayout = ({ children }: JournalInterface ) => {
             
             {/* Journal */}
             <div className="w-100 p-3">
+                
                 <NothingSelectedView/>
                 
                 {/* <NoteView/> */}
-
-                <button className="btn text-white position-absolute bg-main-red rounded-circle d-flex justify-content-center align-items-center" style={{ bottom:'40px', right:'30px', width:'60px', height:'60px', fontSize:'20px'}}>
-                  <FaPlus />
-                </button>
             </div>
 
-            </main>
+        </main>
 
 
     { children }
