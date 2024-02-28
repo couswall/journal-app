@@ -1,11 +1,15 @@
 import { IoMdExit } from "react-icons/io"
 
 import './styles';
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { startLogoutFirebase } from "../../store/auth";
 
 export const Navbar = () => {
 
+  const dispatch = useDispatch<AppDispatch>();
   const onLogout = () => {
-    console.log('logout');
+    dispatch( startLogoutFirebase() );
   }
 
   return (
