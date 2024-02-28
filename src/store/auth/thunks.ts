@@ -70,6 +70,6 @@ export const startLogoutFirebase = (): ThunkAction<void, RootState, unknown, Unk
 
         await logoutFirebase();
 
-        dispatch( logout({}) );
+        dispatch( logout( null ) );
     }
 }
