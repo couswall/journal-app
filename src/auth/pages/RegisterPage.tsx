@@ -101,11 +101,18 @@ export const RegisterPage = () => {
             <>{ ( !!passwordValid && formSubmitted ) && <div id="passwordHelpBlock" className="form-text">{passwordValid}</div> } </>
           </div>
           {/* Error Message */}
-          <div className="mb-3">             
-             <div className="form-text alert alert-warning" style={{ display: (!!errorMessage && formSubmitted ) ? '' : 'none'}}>
-                { errorMessage as string }
-              </div>
-          </div>
+          
+            <>
+              {
+                (!!errorMessage) 
+                && <div className="mb-3">             
+                      <div className="form-text alert alert-warning">
+                        { errorMessage as string }
+                      </div>
+                  </div>
+              }    
+            </>
+          
           <div className="d-flex justify-content-between gap-2 mb-3 mt-4">
             <button 
               type="submit" 
