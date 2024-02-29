@@ -35,12 +35,13 @@ export const journalSlice = createSlice({
 
     // Agregar una nueva nota
     addNewEmptyNote: ( state, action ) => {
-
+      state.notes.push( action.payload );
+      state.isSaving = false; 
     },
     
     // Establece la nota activa
     setActiveNote: ( state, action ) => {
-
+      
     },
 
     // Establece las notas del usuario
@@ -67,4 +68,4 @@ export const journalSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById } = journalSlice.actions
+export const { addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById, isSavingNote } = journalSlice.actions
