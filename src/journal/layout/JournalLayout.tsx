@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux"
 import { Navbar, Sidebar } from "../components"
 import { NoteView, NothingSelectedView } from "../view"
+import { RootState } from "../../store"
 
 interface JournalInterface {
     children?: JSX.Element[] | JSX.Element
@@ -7,6 +9,9 @@ interface JournalInterface {
 
 
 export const JournalLayout = ({ children }: JournalInterface ) => {
+
+  const { active } = useSelector( ( state: RootState ) => state.journal );
+
   return (
     <div className="container-fluid vh-100 p-0 position-relative" style={{backgroundColor: 'var(--light-color)'}}>
         
@@ -21,10 +26,11 @@ export const JournalLayout = ({ children }: JournalInterface ) => {
             
             {/* Journal */}
             <div className="w-100 p-3">
-                
-                <NothingSelectedView/>
-                
-                {/* <NoteView/> */}
+
+              {
+                ( !!active ) ? <NoteView/> : <NothingSelectedView/>
+              }
+                 
             </div>
 
         </main>
