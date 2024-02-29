@@ -46,7 +46,7 @@ export const journalSlice = createSlice({
 
     // Establece las notas del usuario
     setNotes: ( state, action ) => {
-
+      state.notes = action.payload; 
     },
 
     // Cambia el estado de isSaving cuando una nota se haya guardado
