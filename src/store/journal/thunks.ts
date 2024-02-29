@@ -39,3 +39,14 @@ export const startNewNote = (): ThunkAction<void, RootState, unknown, UnknownAct
 
 
 }
+
+
+// Cargar las imágenes que del usuario 
+export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+    return async ( dispatch, getState ) => {
+
+        const { uid } = getState().auth;
+        
+
+    }
+}
