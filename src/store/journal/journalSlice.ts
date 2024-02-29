@@ -41,7 +41,7 @@ export const journalSlice = createSlice({
     
     // Establece la nota activa
     setActiveNote: ( state, action ) => {
-      
+      state.active = action.payload;
     },
 
     // Establece las notas del usuario
