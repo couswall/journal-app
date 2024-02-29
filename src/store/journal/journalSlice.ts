@@ -6,6 +6,7 @@ export interface NoteState {
     title: string; 
     body: string; 
     date: Date; 
+    imageUrls: string [];
 }
 
 export interface JournalState {
@@ -26,9 +27,39 @@ export const journalSlice = createSlice({
   name: 'journal',
   initialState,
   reducers: {
+
+    // Agregar una nueva nota
+    addNewEmptyNote: ( state, action ) => {
+
+    },
+    
+    // Establece la nota activa
+    setActiveNote: ( state, action ) => {
+
+    },
+
+    // Establece las notas del usuario
+    setNotes: ( state, action ) => {
+
+    },
+
+    // Cambia el estado de isSaving cuando una nota se haya guardado
+    setSaving: ( state ) => {
+
+    },
+
+    // Actualiza una nota 
+    updateNote: ( state, action ) => {
+
+    },
+
+    // ELimina una nota de acuerdo a su Id
+    deleteNoteById: ( state, action ) => {
+
+    }
    
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {  } = journalSlice.actions
+export const { addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById } = journalSlice.actions
