@@ -3,7 +3,8 @@ import { ThunkAction } from "../auth";
 import { RootState } from "../store";
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { addNewEmptyNote, isSavingNote, setActiveNote } from ".";
+import { addNewEmptyNote, isSavingNote, setActiveNote, setNotes } from ".";
+import { loadNotes } from "../../helpers";
 
 interface newAddedNote {
     id?: string; 
@@ -46,7 +47,10 @@ export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, Unkno
     return async ( dispatch, getState ) => {
 
         const { uid } = getState().auth;
-        
+
+        const notes = await loadNotes( uid )
+
+        dispatch( setNotes( notes ) );
 
     }
 }
