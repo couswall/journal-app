@@ -28,6 +28,11 @@ export const journalSlice = createSlice({
   initialState,
   reducers: {
 
+    // Cambia el state de isSaving a true
+    isSavingNote: ( state ) => { 
+      state.isSaving = true; 
+    },
+
     // Agregar una nueva nota
     addNewEmptyNote: ( state, action ) => {
 
