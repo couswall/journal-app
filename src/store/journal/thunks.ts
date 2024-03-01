@@ -3,7 +3,7 @@ import { ThunkAction } from "../auth";
 import { RootState } from "../store";
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { addNewEmptyNote, isSavingNote, setActiveNote, setNotes } from ".";
+import { addNewEmptyNote, isSavingNote, setActiveNote, setNotes, setSaving, updateNote } from ".";
 import { loadNotes } from "../../helpers";
 
 interface NewAddedNote {
@@ -59,7 +59,18 @@ export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, Unkno
 export const startSavingNote = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
     return async( dispatch, getState ) => {
 
+        dispatch( setSaving() );
+        const { uid } = getState().auth;
+
+        const { active: note } = getState().journal;
         
+        const noteToFirestore = { ...note };
+        delete noteToFirestore.id;
+
+        const docRef = doc( FirebaseDB, `${uid}/journal/notes/${note?.id}`); 
         
+        await setDoc( docRef, noteToFirestore, { merge: true }); 
+        
+        dispatch( updateNote( note ) );
     }
 }
