@@ -6,6 +6,8 @@ interface FormCheckedValidation {
     [key: string ]: null | string; 
 }
 
+type InputTarget = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+
 export const useForm = <T extends Record<string,string>> ( 
     initialForm: T, 
     formValidations: Validations = {} 
@@ -15,7 +17,7 @@ export const useForm = <T extends Record<string,string>> (
     const [ formValidation, setFormValidation ] = useState<FormCheckedValidation>({});
 
     //onInputChange
-    const onInputChange = ( {target}: React.ChangeEvent<HTMLInputElement> ):void => {
+    const onInputChange = ( {target}: InputTarget ):void => {
 
         const { name, value } = target;
         setFormState({
