@@ -1,5 +1,8 @@
 import { IoSaveSharp } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
+
 import { AppDispatch, RootState } from "../../store";
 import { useEffect, useMemo } from "react";
 import { useForm } from "../../hooks";
@@ -8,7 +11,7 @@ import { setActiveNote, startSavingNote } from "../../store/journal";
 export const NoteView = () => {
  
     const dispatch = useDispatch<AppDispatch>(); 
-    const { active: note } = useSelector( ( state: RootState ) => state.journal ); 
+    const { active: note, isSaving, messageSaved } = useSelector( ( state: RootState ) => state.journal ); 
     const { title, body, date, onInputChange, formState } = useForm( note );
     
     const dateString = useMemo( () => {
@@ -23,6 +26,15 @@ export const NoteView = () => {
         dispatch( setActiveNote( formState ) );
     }, [ formState ]); 
 
+    
+    //Muestra la alerta de que se guardo exitosamente la nota
+    useEffect( () => {
+
+        if ( messageSaved.length > 0 ) {
+            Swal.fire('Nota actualizada', messageSaved, 'success');
+        }
+
+    }, [ messageSaved])
 
     // Guarda la nota
     const onHandleSaveNote = () => {
