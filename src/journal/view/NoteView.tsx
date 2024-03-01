@@ -26,7 +26,7 @@ export const NoteView = () => {
 
     // Guarda la nota
     const onHandleSaveNote = () => {
-
+        dispatch( startSavingNote() ); 
     }
     
     return (
