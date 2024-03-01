@@ -52,6 +52,7 @@ export const journalSlice = createSlice({
     // Cambia el estado de isSaving cuando una nota se haya guardado
     setSaving: ( state ) => {
       state.isSaving = true; 
+      state.messageSaved = "";
     },
 
     // Actualiza una nota 
@@ -62,7 +63,8 @@ export const journalSlice = createSlice({
             return action.payload; 
         }
         return note; 
-      })
+      });
+      state.messageSaved = `${action.payload.title}, actualizada correctamente`;
     },
 
     // ELimina una nota de acuerdo a su Id
