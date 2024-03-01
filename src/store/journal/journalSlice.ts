@@ -56,7 +56,12 @@ export const journalSlice = createSlice({
 
     // Actualiza una nota 
     updateNote: ( state, action ) => {
-
+      state.notes = state.notes.map( note => {
+        if ( note.id === action.payload.id ) {
+            return action.payload; 
+        }
+        return note; 
+      })
     },
 
     // ELimina una nota de acuerdo a su Id
