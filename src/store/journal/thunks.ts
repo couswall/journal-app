@@ -6,7 +6,7 @@ import { FirebaseDB } from "../../firebase/config";
 import { addNewEmptyNote, isSavingNote, setActiveNote, setNotes } from ".";
 import { loadNotes } from "../../helpers";
 
-interface newAddedNote {
+interface NewAddedNote {
     id?: string; 
     title: string; 
     body: string; 
@@ -22,7 +22,7 @@ export const startNewNote = (): ThunkAction<void, RootState, unknown, UnknownAct
 
         const { uid } = getState().auth;
 
-        const newNote: newAddedNote = {
+        const newNote: NewAddedNote = {
             title: '', 
             body: '', 
             imageUrls: [],
