@@ -54,3 +54,12 @@ export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, Unkno
 
     }
 }
+
+//Guardar nota
+export const startSavingNote = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+    return async( dispatch, getState ) => {
+
+        
+        
+    }
+}
