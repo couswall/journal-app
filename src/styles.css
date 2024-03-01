@@ -43,3 +43,7 @@ body{
 }
 
 
+.add-note-btn:hover{
+    background-color: #d81616;
+}
+

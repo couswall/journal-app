@@ -19,7 +19,7 @@ export const JournalPage = () => {
         <JournalLayout>
 
         <button 
-          className="btn text-white position-absolute bg-main-red rounded-circle d-flex justify-content-center align-items-center" 
+          className="add-note-btn btn text-white position-absolute bg-main-red rounded-circle d-flex justify-content-center align-items-center" 
           style={{ bottom:'40px', right:'30px', width:'60px', height:'60px', fontSize:'20px'}}
           onClick={() => onCreateNewNote()}
           disabled = { isSaving }
