@@ -18,7 +18,7 @@ export const Sidebar = () => {
         <ul className="list-group list-group-flush border-bottom"> 
         {
             notes.map( (note) => (
-                <SidebarItem key={ note.id } note = { note }/>
+                <SidebarItem key={ note.id }  { ...note }/>
             ))
         }
         </ul>
