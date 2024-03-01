@@ -44,9 +44,18 @@ export const useForm = <T extends Record<string,string>> (
     }, [ formValidation ]);
 
 
+    //Cada vez que el formulario de registro cambia se ejecuta la función de createValidators para validar el formulario
     useEffect( () => {
         createValidators();
     }, [formState]);
+
+
+    //Cada que cambie el initialForm se establecera el estado dle FormState de acuerdo al initialForm
+    useEffect( () => {
+
+        setFormState( initialForm )
+
+    }, [ initialForm ]);
 
 
     //Validación de Formulario
