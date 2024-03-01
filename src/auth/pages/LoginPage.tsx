@@ -6,14 +6,18 @@ import { startGoogleSignIn, startSignInWithEmailPassword } from "../../store/aut
 import { AppDispatch } from "../../store";
 import { FormLayout } from "../layout/FormLayout";
 
+
+const formData = {
+  email: '',
+  password: ''
+}
+
+
 export const LoginPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { email, password, onInputChange } = useForm({
-    email: '',
-    password: ''
-  }); 
+  const { email, password, onInputChange } = useForm( formData ); 
 
 
   //Submit Function
