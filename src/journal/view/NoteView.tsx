@@ -1,14 +1,15 @@
 import { IoSaveSharp } from "react-icons/io5"
-import { useSelector } from "react-redux"
-import { RootState } from "../../store";
-import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../../store";
+import { useEffect, useMemo } from "react";
 import { useForm } from "../../hooks";
+import { setActiveNote } from "../../store/journal";
 
 export const NoteView = () => {
  
- 
+    const dispatch = useDispatch<AppDispatch>(); 
     const { active: note } = useSelector( ( state: RootState ) => state.journal ); 
-    const { title, body, date, onInputChange } = useForm( note );
+    const { title, body, date, onInputChange, formState } = useForm( note );
     
     const dateString = useMemo( () => {
         const newDate = new Date( date );
@@ -17,7 +18,10 @@ export const NoteView = () => {
     
     },[ date ] );
 
-    
+    //Actualiza la nota activa en el store cuando modificamos los valores de los input
+    useEffect(  () => {
+        dispatch( setActiveNote( formState ) );
+    }, [ formState ]); 
     
     return (
 
