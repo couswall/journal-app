@@ -1,8 +1,14 @@
 .sidebar{
     width: 340px;
     margin-top: -60px;
+    height: calc(100% + 60px);
 }
 
 .name-container{
     height: 60px;
+}
+
+.sidebar .list-group{
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
 }
