@@ -50,6 +50,7 @@ export const NoteView = () => {
             <button 
                 className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
                 onClick={ () => onHandleSaveNote() }
+                disabled = { isSaving }
             >
                 
                 <IoSaveSharp /> 
