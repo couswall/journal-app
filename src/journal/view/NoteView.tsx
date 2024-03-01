@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store";
 import { useEffect, useMemo } from "react";
 import { useForm } from "../../hooks";
-import { setActiveNote } from "../../store/journal";
+import { setActiveNote, startSavingNote } from "../../store/journal";
 
 export const NoteView = () => {
  
@@ -22,13 +22,23 @@ export const NoteView = () => {
     useEffect(  () => {
         dispatch( setActiveNote( formState ) );
     }, [ formState ]); 
+
+
+    // Guarda la nota
+    const onHandleSaveNote = () => {
+
+    }
     
     return (
 
     <div className="w-100 h-100">
         <div className="d-flex justify-content-between align-items-center">
             <h2 className="text-primary-color">{ dateString }</h2>
-            <button className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center">
+            <button 
+                className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
+                onClick={ () => onHandleSaveNote() }
+            >
+                
                 <IoSaveSharp /> 
                 <strong>GUARDAR</strong>
             </button>
