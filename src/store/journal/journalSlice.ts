@@ -51,11 +51,12 @@ export const journalSlice = createSlice({
 
     // Cambia el estado de isSaving cuando una nota se haya guardado
     setSaving: ( state ) => {
-
+      state.isSaving = true; 
     },
 
     // Actualiza una nota 
     updateNote: ( state, action ) => {
+      state.isSaving = false; 
       state.notes = state.notes.map( note => {
         if ( note.id === action.payload.id ) {
             return action.payload; 
