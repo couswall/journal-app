@@ -1,3 +1,9 @@
 .sidebar-item{
     background-color: var(--light-color);
+    cursor: pointer;
+    transition: all 150ms ease-in;
+}
+
+.sidebar-item:hover{
+    background-color: #dbd0cd;
 }
