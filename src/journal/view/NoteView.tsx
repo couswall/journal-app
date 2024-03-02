@@ -6,7 +6,7 @@ import 'sweetalert2/dist/sweetalert2.css';
 import { AppDispatch, RootState } from "../../store";
 import { useEffect, useMemo } from "react";
 import { useForm } from "../../hooks";
-import { setActiveNote, startSavingNote } from "../../store/journal";
+import { setActiveNote, startDeletingNoteById, startSavingNote } from "../../store/journal";
 
 export const NoteView = () => {
  
@@ -40,6 +40,13 @@ export const NoteView = () => {
     const onHandleSaveNote = () => {
         if( title.length <= 1 ) return; 
         dispatch( startSavingNote() ); 
+    }
+
+
+
+    // Elimina la nota 
+    const onDeleteNote = () => {
+        dispatch( startDeletingNoteById() )
     }
     
     return (
@@ -78,6 +85,11 @@ export const NoteView = () => {
             >
             </textarea>
         </div>
+
+       
+            <button className="btn btn-danger ml-auto" onClick={ onDeleteNote }>Eliminar</button>
+        
+
     </div>
   )
 }
