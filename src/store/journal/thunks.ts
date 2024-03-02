@@ -1,10 +1,11 @@
 import { UnknownAction } from "@reduxjs/toolkit";
 import { ThunkAction } from "../auth";
 import { RootState } from "../store";
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, doc, setDoc, deleteDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { addNewEmptyNote, isSavingNote, setActiveNote, setNotes, setSaving, updateNote } from ".";
+import { addNewEmptyNote, deleteNoteById, isSavingNote, setActiveNote, setNotes, setSaving, updateNote } from ".";
 import { loadNotes } from "../../helpers";
+
 
 interface NewAddedNote {
     id?: string; 
@@ -72,5 +73,26 @@ export const startSavingNote = (): ThunkAction<void, RootState, unknown, Unknown
         await setDoc( docRef, noteToFirestore, { merge: true }); 
         
         dispatch( updateNote( note ) );
+    }
+}
+
+
+
+// Borrar nota
+export const startDeletingNoteById = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+    return async ( dispatch, getState ) => {
+
+        const { uid } = getState().auth;
+
+        const { active: note } = getState().journal; 
+
+        // console.log(uid)
+
+        const docRef = doc( FirebaseDB, `${uid}/journal/notes/${note?.id}`); 
+
+        await deleteDoc( docRef ); 
+
+        dispatch( deleteNoteById( note?.id ) );
+
     }
 }
