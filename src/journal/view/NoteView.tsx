@@ -46,7 +46,27 @@ export const NoteView = () => {
 
     // Elimina la nota 
     const onDeleteNote = () => {
-        dispatch( startDeletingNoteById() )
+
+        Swal.fire({
+            title: '¿Deseas eliminar la nota?',
+            text: 'Está acción no podrá revertir', 
+            icon: 'warning', 
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar"
+        }).then( (result) => {
+            if ( result.isConfirmed ) {
+                dispatch( startDeletingNoteById() ); 
+                Swal.fire({
+                    title: "Eliminada",
+                    text: "Nota eliminada",
+                    icon: "success"
+                  });
+            }
+        })
+
+        
     }
     
     return (
