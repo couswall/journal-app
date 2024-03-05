@@ -71,6 +71,11 @@ export const NoteView = () => {
 
         
     }
+
+    // Subir Fotos 
+    const onFileInputChange = () => {
+
+    }
     
     return (
 
@@ -82,6 +87,7 @@ export const NoteView = () => {
                     type="file" 
                     style={{ display: 'none'}} 
                     ref={ fileInputRef }
+                    onChange={ onFileInputChange }
                 />
                 <button 
                     className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
