@@ -76,7 +76,7 @@ export const NoteView = () => {
 
     <div className="w-100 h-100">
         <div className="d-flex justify-content-between align-items-center">
-            <h2 className="text-primary-color">{ dateString }</h2>
+            <h2 className="text-primary-color fs-3">{ dateString }</h2>
             <div className="buttons-container d-flex">
                 <input 
                     type="file" 
@@ -84,10 +84,11 @@ export const NoteView = () => {
                     ref={ fileInputRef }
                 />
                 <button 
-                    className="icon btn fs-6 text-primary-color d-flex justify-content-between align-items-center"
+                    className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
                     onClick={ () => fileInputRef.current?.click()}
                 >
                     <FaUpload />
+                    <strong>Add Images</strong>
                 </button>
                 <button 
                     className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
@@ -96,7 +97,7 @@ export const NoteView = () => {
                 >
                     
                     <IoSaveSharp /> 
-                    <strong>GUARDAR</strong>
+                    <strong>Guardar</strong>
                 </button>
             </div>
         </div>
