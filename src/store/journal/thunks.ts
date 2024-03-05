@@ -15,8 +15,10 @@ interface NewAddedNote {
     date: number; 
 }
 
+type ThunkActionType = ThunkAction<void, RootState, unknown, UnknownAction>; 
+
 // Función para agregar una nueva nota
-export const startNewNote = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+export const startNewNote = (): ThunkActionType => {
     return async( dispatch, getState ) => {
 
         dispatch( isSavingNote() );
@@ -44,7 +46,7 @@ export const startNewNote = (): ThunkAction<void, RootState, unknown, UnknownAct
 
 
 // Cargar las imágenes que del usuario 
-export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+export const startLoadingNotes = (): ThunkActionType => {
     return async ( dispatch, getState ) => {
 
         const { uid } = getState().auth;
@@ -57,7 +59,7 @@ export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, Unkno
 }
 
 //Guardar nota
-export const startSavingNote = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+export const startSavingNote = (): ThunkActionType => {
     return async( dispatch, getState ) => {
 
         dispatch( setSaving() );
@@ -79,7 +81,7 @@ export const startSavingNote = (): ThunkAction<void, RootState, unknown, Unknown
 
 
 // Borrar nota
-export const startDeletingNoteById = (): ThunkAction<void, RootState, unknown, UnknownAction> => {
+export const startDeletingNoteById = (): ThunkActionType => {
     return async ( dispatch, getState ) => {
 
         const { uid } = getState().auth;
@@ -94,5 +96,15 @@ export const startDeletingNoteById = (): ThunkAction<void, RootState, unknown, U
 
         dispatch( deleteNoteById( note?.id ) );
 
+    }
+}
+
+/// Subir fotos a cloudinary
+export const startUploadingFiles = ( files = [] ): ThunkActionType => {
+    return async( dispatch ) => {
+
+        dispatch( setSaving() ); 
+
+        console.log( files );
     }
 }
