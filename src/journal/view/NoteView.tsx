@@ -73,8 +73,9 @@ export const NoteView = () => {
     }
 
     // Subir Fotos 
-    const onFileInputChange = () => {
-
+    const onFileInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+        if( target.files?.length === 0 ) return; 
+        
     }
     
     return (
@@ -85,6 +86,7 @@ export const NoteView = () => {
             <div className="buttons-container d-flex">
                 <input 
                     type="file" 
+                    multiple
                     style={{ display: 'none'}} 
                     ref={ fileInputRef }
                     onChange={ onFileInputChange }
