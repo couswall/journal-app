@@ -4,15 +4,18 @@ import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 
 import { AppDispatch, RootState } from "../../store";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "../../hooks";
 import { setActiveNote, startDeletingNoteById, startSavingNote } from "../../store/journal";
+import { FaUpload } from "react-icons/fa";
 
 export const NoteView = () => {
  
     const dispatch = useDispatch<AppDispatch>(); 
     const { active: note, isSaving, messageSaved } = useSelector( ( state: RootState ) => state.journal ); 
     const { title, body, date, onInputChange, formState } = useForm( note );
+
+    const fileInputRef = useRef<HTMLInputElement>(null); 
     
     const dateString = useMemo( () => {
         const newDate = new Date( date );
@@ -74,15 +77,28 @@ export const NoteView = () => {
     <div className="w-100 h-100">
         <div className="d-flex justify-content-between align-items-center">
             <h2 className="text-primary-color">{ dateString }</h2>
-            <button 
-                className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
-                onClick={ () => onHandleSaveNote() }
-                disabled = { isSaving }
-            >
-                
-                <IoSaveSharp /> 
-                <strong>GUARDAR</strong>
-            </button>
+            <div className="buttons-container d-flex">
+                <input 
+                    type="file" 
+                    style={{ display: 'none'}} 
+                    ref={ fileInputRef }
+                />
+                <button 
+                    className="icon btn fs-6 text-primary-color d-flex justify-content-between align-items-center"
+                    onClick={ () => fileInputRef.current?.click()}
+                >
+                    <FaUpload />
+                </button>
+                <button 
+                    className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
+                    onClick={ () => onHandleSaveNote() }
+                    disabled = { isSaving }
+                >
+                    
+                    <IoSaveSharp /> 
+                    <strong>GUARDAR</strong>
+                </button>
+            </div>
         </div>
         <div className="mb-3">
             <input 
