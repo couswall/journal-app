@@ -6,8 +6,9 @@ import 'sweetalert2/dist/sweetalert2.css';
 import { AppDispatch, RootState } from "../../store";
 import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "../../hooks";
-import { setActiveNote, startDeletingNoteById, startSavingNote } from "../../store/journal";
+import { setActiveNote, startDeletingNoteById, startSavingNote, startUploadingFiles } from "../../store/journal";
 import { FaUpload } from "react-icons/fa";
+import { ImageGallery } from "../components";
 
 export const NoteView = () => {
  
@@ -75,6 +76,8 @@ export const NoteView = () => {
     // Subir Fotos 
     const onFileInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         if( target.files?.length === 0 ) return; 
+
+        dispatch( startUploadingFiles( target.files ) ); 
         
     }
     
@@ -87,6 +90,7 @@ export const NoteView = () => {
                 <input 
                     type="file" 
                     multiple
+                    accept="image/png, image/gif, image/jpeg"
                     style={{ display: 'none'}} 
                     ref={ fileInputRef }
                     onChange={ onFileInputChange }
@@ -131,6 +135,7 @@ export const NoteView = () => {
             </textarea>
         </div>
 
+        <ImageGallery imagesArray = { note!.imageUrls }/>
        
             <button className="btn btn-danger ml-auto" onClick={ onDeleteNote }>Eliminar</button>
         
