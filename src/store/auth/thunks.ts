@@ -2,6 +2,7 @@ import { Action, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import { checkingCredentials, login, logout } from ".";
 import { LoginEmailPassword, RegisterNewUser, loginWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
 import { RootState } from "../store";
+import { clearNotesLogout } from "../journal";
 
 export type ThunkAction<
   R, // Return type of the thunk function
@@ -69,7 +70,7 @@ export const startLogoutFirebase = (): ThunkAction<void, RootState, unknown, Unk
     return async ( dispatch ) => {
 
         await logoutFirebase();
-
+        dispatch( clearNotesLogout() ); 
         dispatch( logout( null ) );
     }
 }
