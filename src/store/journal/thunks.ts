@@ -3,8 +3,8 @@ import { ThunkAction } from "../auth";
 import { RootState } from "../store";
 import { collection, doc, setDoc, deleteDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { addNewEmptyNote, deleteNoteById, isSavingNote, setActiveNote, setNotes, setSaving, updateNote } from ".";
-import { loadNotes } from "../../helpers";
+import { addNewEmptyNote, deleteNoteById, isSavingNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from ".";
+import { fileUpload, loadNotes } from "../../helpers";
 
 
 interface NewAddedNote {
@@ -100,11 +100,19 @@ export const startDeletingNoteById = (): ThunkActionType => {
 }
 
 /// Subir fotos a cloudinary
-export const startUploadingFiles = ( files = [] ): ThunkActionType => {
+export const startUploadingFiles = ( files: ( File[] | null | FileList ) ): ThunkActionType => {
     return async( dispatch ) => {
 
         dispatch( setSaving() ); 
 
-        console.log( files );
+        const filesUploadPromises = [];
+
+        for (const file of files!) {
+            filesUploadPromises.push( fileUpload( file ) ); 
+        }
+
+        const filesUrl = await Promise.all( filesUploadPromises ); 
+
+        dispatch( setPhotosToActiveNote( filesUrl ) ); 
     }
 }
