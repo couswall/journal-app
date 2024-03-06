@@ -1,0 +1,22 @@
+.gallery-wrapper{
+    overflow-y: scroll;
+    height: calc(80vh - 200px);
+}
+
+.gallery-wrapper .image-gallery{
+    height: 200px;
+}
+
+.gallery-wrapper .image-gallery img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+}
+
+/* ======== BREAKPOINTS ===========*/
+@media (max-width: 767.98px)  { 
+    .gallery-wrapper {
+        height: calc(70vh - 200px);
+    }
+ }
