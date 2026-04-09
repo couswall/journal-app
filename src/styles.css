@@ -1,52 +1,320 @@
-*{
-    padding: 0;
-    margin: 0;
+@import "tailwindcss";
+
+/* ─── Design System: "The Digital Sanctuary" ─── */
+
+@theme {
+  /* ── Fonts ── */
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Be Vietnam Pro", sans-serif;
+
+  /* ── Color palette ── */
+
+  /* Primary — botanical green */
+  --color-primary:           #4c6456;
+  --color-on-primary:        #ffffff;
+  --color-primary-container: #cee9d6;
+  --color-on-primary-container: #0b1f14;
+
+  /* Secondary — coastal blue-grey */
+  --color-secondary:           #52616c;
+  --color-on-secondary:        #ffffff;
+  --color-secondary-container: #d5e4f0;
+  --color-secondary-fixed-dim: #b0cad9;
+  --color-on-secondary-container: #0d1e28;
+
+  /* Tertiary — muted sage */
+  --color-tertiary:           #5b6b5e;
+  --color-on-tertiary:        #ffffff;
+  --color-tertiary-container: #deeee1;
+  --color-on-tertiary-container: #172119;
+
+  /* Error */
+  --color-error:           #ba1a1a;
+  --color-on-error:        #ffffff;
+  --color-error-container: #ffdad6;
+
+  /* Surfaces — warm mineral whites */
+  --color-background:                #faf9f6;
+  --color-on-background:             #303330;
+  --color-surface:                   #faf9f6;
+  --color-on-surface:                #303330;
+  --color-surface-container-lowest:  #ffffff;
+  --color-surface-container-low:     #f4f4f0;
+  --color-surface-container:         #eeecea;
+  --color-surface-container-high:    #e8e6e4;
+  --color-surface-container-highest: #e2e0de;
+  --color-on-surface-variant:        #6b6e6b;
+  --color-outline:                   #737973;
+  --color-outline-variant:           #c2c8c2;
+
+  /* ── Border radius ── */
+  --radius-sm:   0.5rem;   /*  8px */
+  --radius-md:   1rem;     /* 16px */
+  --radius-lg:   1.5rem;   /* 24px */
+  --radius-xl:   2rem;     /* 32px */
+  --radius-2xl:  3rem;     /* 48px */
+  --radius-full: 9999px;
+
+  /* ── Spacing extras ── */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+
+  /* ── Box shadows — ambient / mossy glow ── */
+  --shadow-ambient: 0 12px 40px rgba(76, 100, 86, 0.06);
+  --shadow-float:   0 20px 60px rgba(76, 100, 86, 0.10);
+
+  /* ── Backdrop blur ── */
+  --blur-glass: 24px;
+
+  /* ── Typography scale ── */
+  --text-display-lg:   clamp(3rem, 6vw, 4.5rem);
+  --text-display-md:   clamp(2.25rem, 4.5vw, 3.25rem);
+  --text-display-sm:   clamp(1.75rem, 3vw, 2.5rem);
+  --text-headline-lg:  2rem;
+  --text-headline-md:  1.75rem;
+  --text-headline-sm:  1.5rem;
+  --text-body-lg:      1.125rem;
+  --text-body-md:      1rem;
+  --text-body-sm:      0.875rem;
+  --text-label-md:     0.8125rem;
+  --text-label-sm:     0.75rem;
+}
+
+/* ─── Base layer overrides ─── */
+
+@layer base {
+  *, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100dvh;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-on-surface);
+  }
+
+  /* Scrollbar — thin & tonal */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-container-low);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: var(--radius-full);
+  }
 }
 
-:root{
-    --main-font: "Mulish", sans-serif;
-    --background-color: #2B2A4C; 
-    --light-color: #EEE2DE;
-    --red-color: #B31312;
-    --secondary-color: #EA906C;
-}
+/* ─── Component utilities ─── */
 
-body{
-    font-family: var(--main-font);
-    background-color: var(--background-color);
-    color: #fff;
-}
+@layer components {
 
-.btn-primary{
-    background-color: var(--background-color);
+  /* Glass header / floating nav */
+  .glass {
+    background-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+  }
+
+  /* Ambient floating shadow */
+  .shadow-ambient {
+    box-shadow: var(--shadow-ambient);
+  }
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+  }
+
+  /* Primary gradient CTA */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+  }
+
+  /* ── Buttons ── */
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-radius: var(--radius-full);
     border: none;
-}
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+  .btn-primary:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
 
-.btn-primary:hover{
-    background-color: #3e3e5a;
-}
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--color-secondary-container);
+    color: var(--color-on-secondary-container);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background-color: color-mix(in srgb, var(--color-secondary-container) 80%, var(--color-secondary));
+  }
 
-.bg-principal{
-    background-color: var(--background-color);
-}
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-label-md);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
 
-.bg-main-red{
-    background-color: var(--red-color);
-}
-.text-light-color{
-    color: var(--light-color);
-}
+  /* ── Input fields ── */
 
-.text-primary-color{
-    color: var(--background-color);
-}
+  .input-sanctuary {
+    width: 100%;
+    background-color: var(--color-surface-container-low);
+    color: var(--color-on-surface);
+    font-family: var(--font-body);
+    font-size: var(--text-body-md);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1.25rem;
+    outline: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .input-sanctuary::placeholder {
+    color: color-mix(in srgb, var(--color-on-surface-variant) 60%, transparent);
+  }
+  .input-sanctuary:focus {
+    background-color: var(--color-surface-container-highest);
+    box-shadow: 0 2px 0 var(--color-primary), var(--shadow-ambient);
+  }
 
+  /* ── Journal card ── */
 
-.add-note-btn:hover{
-    background-color: #d81616;
-}
+  .card-journal {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-ambient);
+    padding: 2rem;
+    position: relative;
+  }
 
-.icon:hover{
-    color: #5a58a3;
+  /* Favourite accent bar */
+  .card-journal--favorite::before {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    left: 0;
+    width: 4px;
+    height: calc(100% - 3rem);
+    background-color: var(--color-secondary-fixed-dim);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  /* ── Reflection component ── */
+
+  .reflection-block {
+    width: 100%;
+    background-color: var(--color-primary-container);
+    border-radius: var(--radius-xl);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: var(--text-display-sm);
+    color: var(--color-on-primary-container);
+    line-height: 1.25;
+  }
+  /* Paper-grain overlay */
+  .reflection-block::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  /* ── Mood / selection chips ── */
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 1rem;
+    background-color: var(--color-tertiary-container);
+    color: var(--color-on-tertiary-container);
+    font-family: var(--font-body);
+    font-size: var(--text-label-sm);
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  .chip--selected {
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+
+  /* ── Typography helpers ── */
+
+  .text-display-lg  { font-family: var(--font-display); font-size: var(--text-display-lg); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; }
+  .text-display-md  { font-family: var(--font-display); font-size: var(--text-display-md); font-weight: 700; line-height: 1.1;  letter-spacing: -0.025em; }
+  .text-display-sm  { font-family: var(--font-display); font-size: var(--text-display-sm); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
+  .text-headline-lg { font-family: var(--font-display); font-size: var(--text-headline-lg); font-weight: 600; }
+  .text-headline-md { font-family: var(--font-display); font-size: var(--text-headline-md); font-weight: 600; }
+  .text-headline-sm { font-family: var(--font-display); font-size: var(--text-headline-sm); font-weight: 600; }
+  .text-body-lg     { font-family: var(--font-body);    font-size: var(--text-body-lg);    line-height: 1.6; }
+  .text-body-md     { font-family: var(--font-body);    font-size: var(--text-body-md);    line-height: 1.6; }
+  .text-body-sm     { font-family: var(--font-body);    font-size: var(--text-body-sm);    line-height: 1.5; }
+  .text-label-md    { font-family: var(--font-body);    font-size: var(--text-label-md);   font-weight: 500; letter-spacing: 0.02em; }
+  .text-label-sm    { font-family: var(--font-body);    font-size: var(--text-label-sm);   font-weight: 500; letter-spacing: 0.03em; }
 }

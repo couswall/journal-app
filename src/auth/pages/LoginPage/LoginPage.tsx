@@ -1,46 +1,48 @@
 import { Link } from "react-router-dom";
-import { FaGoogle, FaEnvelope, FaUser } from "react-icons/fa";
+import { FaGoogle, FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startCreatingUserWithEmailPassword } from "../../store/auth";
-import { AppDispatch, RootState } from "../../store";
+import { z } from "zod";
+import {
+  startGoogleSignIn,
+  startSignInWithEmailPassword,
+} from "../../../store/auth";
+import { AppDispatch, RootState } from "../../../store";
 import {
   AuthBackground,
+  LoginBrand,
   FormInput,
   PasswordInput,
-  RegisterBrand,
-} from "../components";
-import { registerSchema } from "../schemas";
+} from "../../components";
+import { loginSchema } from "../../schemas";
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>;
 
-export const RegisterPage = () => {
-  const { errorMessage, status } = useSelector(
+export const LoginPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { status, errorMessage } = useSelector(
     (state: RootState) => state.auth,
   );
-  const dispatch = useDispatch<AppDispatch>();
   const isLoading = status === "checking";
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { displayName: "", email: "", password: "", terms: false },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
   });
 
-  const onSubmitForm = ({
-    displayName,
-    email,
-    password,
-  }: RegisterFormValues) => {
+  const onSubmitForm = ({ email, password }: LoginFormValues) => {
     if (isLoading) return;
-    dispatch(
-      startCreatingUserWithEmailPassword({ displayName, email, password }),
-    );
+    dispatch(startSignInWithEmailPassword({ email, password }));
+  };
+
+  const onGoogleSignIn = () => {
+    if (isLoading) return;
+    dispatch(startGoogleSignIn());
   };
 
   return (
@@ -48,24 +50,10 @@ export const RegisterPage = () => {
       <AuthBackground />
 
       <main className="relative z-10 flex w-full max-w-120 flex-1 flex-col justify-center px-6 py-20">
-        <RegisterBrand />
+        <LoginBrand />
 
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <div className="mb-8 flex flex-col gap-6">
-            <FormInput
-              label="Full Name"
-              type="text"
-              name="displayName"
-              register={register}
-              placeholder="Enter your name"
-              icon={<FaUser size={16} />}
-              error={
-                errors.displayName
-                  ? String(errors.displayName.message)
-                  : undefined
-              }
-            />
-
             <FormInput
               label="Email Address"
               type="email"
@@ -79,22 +67,16 @@ export const RegisterPage = () => {
             <PasswordInput
               name="password"
               register={register}
-              showForgot={false}
-              error={
-                errors.password ? String(errors.password.message) : undefined
-              }
+              error={errors.password ? String(errors.password.message) : undefined}
             />
 
             <label className="flex cursor-pointer items-center gap-3 px-2">
               <input
                 type="checkbox"
-                {...register("terms")}
                 className="h-5 w-5 shrink-0 cursor-pointer accent-primary"
               />
               <span className="text-label-md font-medium text-on-surface-variant">
-                I agree to the{" "}
-                <span className="font-bold text-primary">Terms</span> and{" "}
-                <span className="font-bold text-primary">Privacy Policy</span>.
+                Keep me signed in
               </span>
             </label>
           </div>
@@ -134,23 +116,24 @@ export const RegisterPage = () => {
                       d="M4 12a8 8 0 018-8v8H4z"
                     />
                   </svg>
-                  Creating...
+                  Signing In...
                 </>
               ) : (
-                "Create Account"
+                "Sign In"
               )}
             </button>
 
             <div className="flex items-center py-4">
               <div className="h-px flex-1 bg-outline-variant/15" />
               <span className="mx-4 text-label-sm font-bold uppercase tracking-widest text-outline-variant">
-                or join with
+                or
               </span>
               <div className="h-px flex-1 bg-outline-variant/15" />
             </div>
 
             <button
               type="button"
+              onClick={onGoogleSignIn}
               disabled={isLoading}
               className="flex h-16 w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-outline-variant/10 bg-surface-container-lowest text-base font-semibold text-on-surface transition-all hover:bg-surface-container-low active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
             >
@@ -161,12 +144,12 @@ export const RegisterPage = () => {
 
         <footer className="mt-16 text-center">
           <p className="m-0 text-body-sm font-medium text-on-surface-variant">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link
-              to="/auth/login"
+              to="/auth/register"
               className="ml-1 font-bold text-primary no-underline"
             >
-              Login
+              Create an account
             </Link>
           </p>
         </footer>
