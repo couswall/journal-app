@@ -8,137 +8,152 @@ import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "../../hooks";
 import { setActiveNote, startDeletingNoteById, startSavingNote, startUploadingFiles } from "../../store/journal";
 import { FaUpload } from "react-icons/fa";
+import { FiTrash2, FiArrowLeft } from "react-icons/fi";
 import { ImageGallery } from "../components";
 
 export const NoteView = () => {
- 
-    const dispatch = useDispatch<AppDispatch>(); 
-    const { active: note, isSaving, messageSaved } = useSelector( ( state: RootState ) => state.journal ); 
-    const { title, body, date, onInputChange, formState } = useForm( note );
 
-    const fileInputRef = useRef<HTMLInputElement>(null); 
-    
-    const dateString = useMemo( () => {
-        const newDate = new Date( date );
+  const dispatch = useDispatch<AppDispatch>();
+  const { active: note, isSaving, messageSaved, errorMessage } = useSelector((state: RootState) => state.journal);
+  const { title, body, date, onInputChange, formState } = useForm(note);
 
-        return newDate.toUTCString();
-    
-    },[ date ] );
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    //Actualiza la nota activa en el store cuando modificamos los valores de los input
-    useEffect(  () => {
-        dispatch( setActiveNote( formState ) );
-    }, [ formState ]); 
+  const dateString = useMemo(() => {
+    return new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }, [date]);
 
-    
-    //Muestra la alerta de que se guardo exitosamente la nota
-    useEffect( () => {
+  useEffect(() => {
+    dispatch(setActiveNote(formState));
+  }, [formState]);
 
-        if ( messageSaved.length > 0 ) {
-            Swal.fire('Nota actualizada', messageSaved, 'success');
-        }
-
-    }, [ messageSaved])
-
-    // Guarda la nota
-    const onHandleSaveNote = () => {
-        if( title.length <= 1 ) return; 
-        dispatch( startSavingNote() ); 
+  useEffect(() => {
+    if (messageSaved.length > 0) {
+      Swal.fire('Note saved', messageSaved, 'success');
     }
+  }, [messageSaved]);
 
-
-
-    // Elimina la nota 
-    const onDeleteNote = () => {
-
-        Swal.fire({
-            title: '¿Deseas eliminar la nota?',
-            text: 'Está acción no podrá revertir', 
-            icon: 'warning', 
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, eliminar"
-        }).then( (result) => {
-            if ( result.isConfirmed ) {
-                dispatch( startDeletingNoteById() ); 
-                Swal.fire({
-                    title: "Eliminada",
-                    text: "Nota eliminada",
-                    icon: "success"
-                  });
-            }
-        })
-
-        
+  useEffect(() => {
+    if (errorMessage.length > 0) {
+      Swal.fire('Error', errorMessage, 'error');
     }
+  }, [errorMessage]);
 
-    // Subir Fotos 
-    const onFileInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-        if( target.files?.length === 0 ) return; 
+  const onHandleSaveNote = () => {
+    if (title.length <= 1) return;
+    dispatch(startSavingNote());
+  }
 
-        dispatch( startUploadingFiles( target.files ) ); 
-        
-    }
-    
-    return (
+  const onDeleteNote = () => {
+    Swal.fire({
+      title: '¿Deseas eliminar la nota?',
+      text: 'Esta acción no podrá revertirse',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--color-primary)',
+      cancelButtonColor: 'var(--color-error)',
+      confirmButtonText: 'Sí, eliminar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(startDeletingNoteById());
+      }
+    });
+  }
 
-    <div className="w-100 h-100">
-        <div className="d-flex justify-content-between align-items-center">
-            <h2 className="text-primary-color fs-3">{ dateString }</h2>
-            <div className="buttons-container d-flex">
-                <input 
-                    type="file" 
-                    multiple
-                    accept="image/png, image/gif, image/jpeg"
-                    style={{ display: 'none'}} 
-                    ref={ fileInputRef }
-                    onChange={ onFileInputChange }
-                />
-                <button 
-                    className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
-                    onClick={ () => fileInputRef.current?.click()}
-                >
-                    <FaUpload />
-                    <strong>Add Images</strong>
-                </button>
-                <button 
-                    className="icon btn fs-6 text-primary-color d-flex gap-2 justify-content-between align-items-center"
-                    onClick={ () => onHandleSaveNote() }
-                    disabled = { isSaving }
-                >
-                    
-                    <IoSaveSharp /> 
-                    <strong>Guardar</strong>
-                </button>
-            </div>
-        </div>
-        <div className="mb-3">
-            <input 
-                type="text" 
-                className="w-100" 
-                placeholder="Ingrese un título"
-                name= "title"
-                value={ title }
-                onChange={ onInputChange }
-            />
-        </div>
-        <div className="mb-3">
-            <textarea 
-                className="form-control" 
-                id="exampleFormControlTextarea1" 
-                placeholder="¿Qué sucedió en el día de hoy?"
-                name= "body"
-                value={ body }
-                onChange={ onInputChange }
-            >
-            </textarea>
+  const onFileInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    if (!target.files?.length) return;
+    dispatch(startUploadingFiles(target.files));
+  }
+
+  const onBack = () => {
+    dispatch(setActiveNote(null));
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-6 pt-10 pb-24">
+
+      {/* Top toolbar */}
+      <div className="flex justify-between items-center mb-8 gap-4 flex-wrap">
+        <div className="flex items-center gap-3">
+          <button
+            className="p-2 rounded-full transition-all active:scale-95 hover:opacity-75 text-on-surface-variant"
+            onClick={onBack}
+            aria-label="Back"
+          >
+            <FiArrowLeft size={20} />
+          </button>
+          <span className="font-body text-sm font-medium text-on-surface-variant">
+            {dateString}
+          </span>
         </div>
 
-        <ImageGallery imagesArray = { note!.imageUrls }/>
-       
-            <button className="btn btn-danger ml-auto" onClick={ onDeleteNote }>Eliminar</button>
-        
+        <div className="flex items-center gap-2">
+          <input
+            type="file"
+            multiple
+            accept="image/png, image/gif, image/jpeg"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={onFileInputChange}
+          />
+          <button
+            className="btn-secondary flex items-center gap-2"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSaving}
+          >
+            <FaUpload size={14} />
+            <span>Add Images</span>
+          </button>
+          <button
+            className="btn-primary flex items-center gap-2"
+            onClick={onHandleSaveNote}
+            disabled={isSaving}
+          >
+            <IoSaveSharp size={15} />
+            <span>{isSaving ? 'Saving…' : 'Save'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Title */}
+      <div className="mb-5">
+        <input
+          type="text"
+          className="input-sanctuary w-full font-display font-bold text-headline-lg"
+          placeholder="Enter a title…"
+          name="title"
+          value={title}
+          onChange={onInputChange}
+        />
+      </div>
+
+      {/* Body */}
+      <div className="mb-8">
+        <textarea
+          className="input-sanctuary w-full resize-none font-body text-body-md leading-[1.75]"
+          rows={14}
+          placeholder="What happened today?"
+          name="body"
+          value={body}
+          onChange={onInputChange}
+        />
+      </div>
+
+      {/* Images */}
+      <ImageGallery imagesArray={note!.imageUrls} />
+
+      {/* Delete (only shown for already-saved notes) */}
+      {note?.id && (
+        <div className="flex justify-end mt-8">
+          <button
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full font-body font-semibold text-label-md bg-error-container text-error transition-all active:scale-95 hover:opacity-80 cursor-pointer border-none"
+            onClick={onDeleteNote}
+          >
+            <FiTrash2 size={15} />
+            Delete Note
+          </button>
+        </div>
+      )}
 
     </div>
   )

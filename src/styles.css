@@ -11,6 +11,7 @@
 
   /* Primary — botanical green */
   --color-primary:           #4c6456;
+  --color-primary-dim:       #40584a;
   --color-on-primary:        #ffffff;
   --color-primary-container: #cee9d6;
   --color-on-primary-container: #0b1f14;

@@ -1,42 +1,20 @@
-import { useSelector } from "react-redux"
-import { Navbar, Sidebar } from "../components"
-import { NoteView, NothingSelectedView } from "../view"
-import { RootState } from "../../store"
+import { useSelector } from "react-redux";
+import { Navbar } from "../components";
+import { NoteView, JournalView } from "../view";
+import { RootState } from "../../store";
 
 interface JournalInterface {
-    children?: JSX.Element[] | JSX.Element
+  children?: JSX.Element[] | JSX.Element;
 }
 
-
-export const JournalLayout = ({ children }: JournalInterface ) => {
-
-  const { active } = useSelector( ( state: RootState ) => state.journal );
+export const JournalLayout = ({ children }: JournalInterface) => {
+  const { active } = useSelector((state: RootState) => state.journal);
 
   return (
-    <div className="container-fluid vh-100 p-0 position-relative d-flex flex-column" style={{backgroundColor: 'var(--light-color)'}}>
-        
-        {/* Navbar */}
-        <Navbar/>
-        
-        {/* Main */}
-        <main className="main d-flex flex-row w-100 h-100">
-            {/* Sidebar */}
-            <Sidebar/>
-            
-            
-            {/* Journal */}
-            <div className="w-100 p-3 h-100">
-
-              {
-                ( !!active ) ? <NoteView/> : <NothingSelectedView/>
-              }
-                 
-            </div>
-
-        </main>
-
-
-    { children }
+    <div className="min-h-dvh flex flex-col bg-background text-on-surface">
+      <Navbar />
+      <main className="flex-1">{active ? <NoteView /> : <JournalView />}</main>
+      {children}
     </div>
-  )
-}
+  );
+};

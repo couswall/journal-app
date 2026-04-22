@@ -2,25 +2,27 @@ import { createSlice } from '@reduxjs/toolkit'
 // import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface NoteState {
-    id: string; 
-    title: string; 
-    body: string; 
-    date: Date; 
+    id?: string;
+    title: string;
+    body: string;
+    date: Date;
     imageUrls: string [];
 }
 
 export interface JournalState {
   isSaving: boolean;
-  messageSaved: string; 
+  messageSaved: string;
+  errorMessage: string;
   notes: NoteState[]
-  active: NoteState | null; 
+  active: NoteState | null;
 }
 
 const initialState: JournalState = {
-    isSaving: false, 
+    isSaving: false,
     messageSaved: "",
+    errorMessage: "",
     notes: [],
-    active: null, 
+    active: null,
 }
 
 export const journalSlice = createSlice({
@@ -43,6 +45,7 @@ export const journalSlice = createSlice({
     setActiveNote: ( state, action ) => {
       state.active = action.payload;
       state.messageSaved = "";
+      state.errorMessage = "";
     },
 
     // Establece las notas del usuario
@@ -52,20 +55,30 @@ export const journalSlice = createSlice({
 
     // Cambia el estado de isSaving cuando una nota se haya guardado
     setSaving: ( state ) => {
-      state.isSaving = true; 
+      state.isSaving = true;
       state.messageSaved = "";
+      state.errorMessage = "";
     },
 
-    // Actualiza una nota 
+    // Actualiza una nota (upsert: adds to list if new, updates if existing)
     updateNote: ( state, action ) => {
-      state.isSaving = false; 
-      state.notes = state.notes.map( note => {
-        if ( note.id === action.payload.id ) {
-            return action.payload; 
-        }
-        return note; 
-      });
+      state.isSaving = false;
+      const exists = state.notes.some( n => n.id === action.payload.id );
+      if ( exists ) {
+        state.notes = state.notes.map( note =>
+          note.id === action.payload.id ? action.payload : note
+        );
+      } else {
+        state.notes.push( action.payload );
+      }
+      state.active = action.payload;
       state.messageSaved = `${action.payload.title}, actualizada correctamente`;
+    },
+
+    // Establece un error al guardar la nota
+    setSaveError: ( state, action ) => {
+      state.isSaving = false;
+      state.errorMessage = action.payload;
     },
 
     // ELimina una nota de acuerdo a su Id
@@ -94,14 +107,15 @@ export const journalSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { 
-  addNewEmptyNote, 
-  setActiveNote, 
-  setNotes, 
-  setSaving, 
-  updateNote, 
-  deleteNoteById, 
-  isSavingNote, 
-  setPhotosToActiveNote, 
-  clearNotesLogout 
+export const {
+  addNewEmptyNote,
+  setActiveNote,
+  setNotes,
+  setSaving,
+  updateNote,
+  deleteNoteById,
+  isSavingNote,
+  setPhotosToActiveNote,
+  clearNotesLogout,
+  setSaveError,
 } = journalSlice.actions

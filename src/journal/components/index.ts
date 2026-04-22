@@ -1,4 +1,3 @@
-export * from './Navbar';
-export * from './Sidebar';
-export * from './SidebarItem';
-export * from './ImageGallery';
+export * from "./Navbar";
+export * from "./NoteCard";
+export * from "./ImageGallery";

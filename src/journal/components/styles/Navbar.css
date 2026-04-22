@@ -1,6 +1,0 @@
-nav{
-    background-color: var(--background-color);
-    height: 60px;
-    width: calc(100% - 340px);
-    margin-left: 340px;
-}
